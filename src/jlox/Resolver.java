@@ -157,6 +157,13 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	}
 
 	@Override
+	public Void visitClassStmt(Stmt.Class stmt) {
+		this.declare(stmt.name);
+		this.define(stmt.name);
+		return null;
+	}
+
+	@Override
 	public Void visitExpressionStmt(Stmt.Expression stmt) {
 		this.resolve(stmt.expression);
 		return null;

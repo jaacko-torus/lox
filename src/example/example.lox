@@ -1,7 +1,7 @@
-fun scope(a) {
-  var a = "local";
-
-  print(a);
+class DevonshireCream {
+  serveOn() {
+    return "Scones";
+  }
 }
 
-scope(1);
+print DevonshireCream; // Prints "DevonshireCream".

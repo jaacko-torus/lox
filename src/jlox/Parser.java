@@ -75,17 +75,29 @@ public class Parser {
 
 	private Stmt declaration() {
 		try {
-			if (this.match(TokenType.FUN)) {
-				return this.function("function");
-			} else if (this.match(TokenType.VAR)) {
-				return this.varDeclaration();
-			}
+			if (this.match(TokenType.CLASS)) return this.classDeclaration();
+			if (this.match(TokenType.FUN)) return this.function("function");
+			if (this.match(TokenType.VAR)) return this.varDeclaration();
 
 			return this.statement();
 		} catch (ParseError e) {
 			this.synchronize();
 			return null;
 		}
+	}
+
+	private Stmt classDeclaration() {
+		Token name = this.consume(TokenType.IDENTIFIER, "Expect class name.");
+		this.consume(TokenType.LEFT_CURLY, "Expect \"{\" before class body.");
+
+		List<Stmt.Function> methods = new ArrayList<>();
+		while (!this.check(TokenType.RIGHT_CURLY) && !this.isAtEnd()) {
+			methods.add(this.function("method"));
+		}
+
+		this.consume(TokenType.RIGHT_CURLY, "Expect '}' after class body.");
+
+		return new Stmt.Class(name, methods);
 	}
 
 	private Stmt varDeclaration() {
