@@ -11,6 +11,7 @@ abstract class Expr {
 		T visitGroupingExpr(Grouping expr);
 		T visitLiteralExpr(Literal expr);
 		T visitLogicalExpr(Logical expr);
+		T visitSetExpr(Set expr);
 		T visitUnaryExpr(Unary expr);
 		T visitVariableExpr(Variable expr);
 	}
@@ -119,6 +120,23 @@ abstract class Expr {
 		@Override
 		public <T> T accept(Visitor<T> visitor) {
 			return visitor.visitLogicalExpr(this);
+		}
+	}
+
+	static class Set extends Expr {
+		public final Expr object;
+		public final Token name;
+		public final Expr value;
+
+		Set(Expr object, Token name, Expr value) {
+			this.object = object;
+			this.name = name;
+			this.value = value;
+		}
+
+		@Override
+		public <T> T accept(Visitor<T> visitor) {
+			return visitor.visitSetExpr(this);
 		}
 	}
 
