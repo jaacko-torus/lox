@@ -335,6 +335,9 @@ public class Parser {
 		while (true) {
 			if (this.match(TokenType.LEFT_PAREN)) {
 				expr = this.finishCall(expr);
+			} else if (this.match(TokenType.DOT)) {
+				Token name = this.consume(TokenType.IDENTIFIER, "Expect property name after \".\".");
+				expr = new Expr.Get(expr, name);
 			} else {
 				break;
 			}

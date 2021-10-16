@@ -7,6 +7,7 @@ abstract class Expr {
 		T visitAssignExpr(Assign expr);
 		T visitBinaryExpr(Binary expr);
 		T visitCallExpr(Call expr);
+		T visitGetExpr(Get expr);
 		T visitGroupingExpr(Grouping expr);
 		T visitLiteralExpr(Literal expr);
 		T visitLogicalExpr(Logical expr);
@@ -60,6 +61,21 @@ abstract class Expr {
 		@Override
 		public <T> T accept(Visitor<T> visitor) {
 			return visitor.visitCallExpr(this);
+		}
+	}
+
+	static class Get extends Expr {
+		public final Expr object;
+		public final Token name;
+
+		Get(Expr object, Token name) {
+			this.object = object;
+			this.name = name;
+		}
+
+		@Override
+		public <T> T accept(Visitor<T> visitor) {
+			return visitor.visitGetExpr(this);
 		}
 	}
 
