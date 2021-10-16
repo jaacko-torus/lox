@@ -32,6 +32,7 @@ public class Lox {
 
 		run(new String(bytes, Charset.defaultCharset()));
 
+		// https://www.freebsd.org/cgi/man.cgi?query=sysexits
 		// indicate an error in the exit code
 		if (hadError) {
 			System.exit(65);

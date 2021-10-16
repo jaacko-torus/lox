@@ -22,7 +22,7 @@ public class LoxInstance {
 	public void set(Token name, Object value) {
 		this.fields.put(name.lexeme, value);
 	}
-	
+
 	@Override
 	public String toString() {
 		return this.loxClass + " instance";

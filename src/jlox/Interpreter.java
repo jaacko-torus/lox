@@ -19,7 +19,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
 			@Override
 			public Object call(Interpreter interpreter, List<Object> arguments) {
-				return (double) System.currentTimeMillis() / 1000.0;
+				return (double)System.currentTimeMillis() / 1000.0;
 			}
 
 			@Override
@@ -69,33 +69,33 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		switch (expr.operator.type) {
 			case MINUS:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left - (double) right;
+				return (double)left - (double)right;
 			case SLASH:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left / (double) right;
+				return (double)left / (double)right;
 			case STAR:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left * (double) right;
+				return (double)left * (double)right;
 			case PLUS:
 				if (left instanceof Double && right instanceof Double) {
-					return (double) left + (double) right;
+					return (double)left + (double)right;
 				} else if (left instanceof String && right instanceof String) {
-					return left + (String) right;
+					return left + (String)right;
 				} else {
 					throw new RuntimeError(expr.operator, "Operands must be two numbers, or two strings");
 				}
 			case GREATER:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left > (double) right;
+				return (double)left > (double)right;
 			case GREATER_EQUAL:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left >= (double) right;
+				return (double)left >= (double)right;
 			case LESS:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left < (double) right;
+				return (double)left < (double)right;
 			case LESS_EQUAL:
 				this.checkNumberOperands(expr.operator, left, right);
-				return (double) left <= (double) right;
+				return (double)left <= (double)right;
 			case EQUAL:
 				return this.isEqual(left, right);
 			case BANG_EQUAL:
@@ -118,7 +118,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 			throw new RuntimeError(expr.paren, "Can only call functions and classes.");
 		}
 
-		LoxCallable function = (LoxCallable) callee;
+		LoxCallable function = (LoxCallable)callee;
 
 		if (arguments.size() != function.arity()) {
 			throw new RuntimeError(expr.paren, "Expected " + function.arity() + " arguments but got " + arguments.size() + ".");
@@ -168,11 +168,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	@Override
 	public Object visitSetExpr(Expr.Set expr) {
 		Object object = this.evaluate(expr.object);
-		
+
 		if (!(object instanceof LoxInstance)) {
 			throw new RuntimeError(expr.name, "Only instances have fields");
 		}
-		
+
 		Object value = this.evaluate(expr.value);
 		((LoxInstance)object).set(expr.name, value);
 		return value;
@@ -187,7 +187,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 				return !this.isTruthy(right);
 			case MINUS:
 				this.checkNumberOperand(expr.operator, right);
-				return -(double) right;
+				return -(double)right;
 		}
 
 		return null;
@@ -320,7 +320,7 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		if (object == null) {
 			return false;
 		} else if (object instanceof Boolean) {
-			return (boolean) object;
+			return (boolean)object;
 		} else {
 			return true;
 		}

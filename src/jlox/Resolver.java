@@ -59,9 +59,7 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	}
 
 	private void declare(Token name) {
-		if (this.scopes.isEmpty()) {
-			return;
-		}
+		if (this.scopes.isEmpty()) return;
 
 		Map<String, Boolean> scope = this.scopes.peek();
 
@@ -73,9 +71,7 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	}
 
 	private void define(Token name) {
-		if (this.scopes.isEmpty()) {
-			return;
-		}
+		if (this.scopes.isEmpty()) return;
 
 		this.scopes.peek().put(name.lexeme, true);
 	}

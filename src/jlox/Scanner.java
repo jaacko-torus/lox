@@ -7,6 +7,7 @@ import java.util.Map;
 
 public class Scanner {
 	private static final Map<String, TokenType> keywords;
+
 	static {
 		keywords = new HashMap<>();
 		keywords.put("and", TokenType.AND);
@@ -51,7 +52,6 @@ public class Scanner {
 	private void scanToken() {
 		char c = this.advance();
 
-		// += 1;
 		switch (c) {
 			case '(' -> this.addToken(TokenType.LEFT_PAREN);
 			case ')' -> this.addToken(TokenType.RIGHT_PAREN);
@@ -150,12 +150,8 @@ public class Scanner {
 	}
 
 	private boolean match(char expected) {
-		if (this.isAtEnd()) {
-			return false;
-		}
-		if (this.source.charAt(this.current) != expected) {
-			return false;
-		}
+		if (this.isAtEnd()) return false;
+		if (this.source.charAt(this.current) != expected) return false;
 
 		this.current += 1;
 		return true;
