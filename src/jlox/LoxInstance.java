@@ -16,6 +16,9 @@ public class LoxInstance {
 			return this.fields.get(name.lexeme);
 		}
 
+		LoxFunction method = this.loxClass.findMethod(name.lexeme);
+		if (method != null) return method;
+
 		throw new RuntimeError(name, "Undefined property \"" + name.lexeme + "\".");
 	}
 

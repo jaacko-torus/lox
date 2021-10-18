@@ -16,7 +16,8 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 
 	private enum FunctionType {
 		NONE,
-		FUNCTION
+		FUNCTION,
+		METHOD
 	}
 
 	public void resolve(List<Stmt> statements) {
@@ -169,6 +170,12 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	public Void visitClassStmt(Stmt.Class stmt) {
 		this.declare(stmt.name);
 		this.define(stmt.name);
+
+		for (Stmt.Function method : stmt.methods) {
+			FunctionType declaration = FunctionType.METHOD;
+			this.resolveFunction(method, declaration);
+		}
+
 		return null;
 	}
 
