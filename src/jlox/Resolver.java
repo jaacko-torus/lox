@@ -193,6 +193,14 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 		this.declare(stmt.name);
 		this.define(stmt.name);
 
+		if (stmt.superclass != null && stmt.name.lexeme.equals(stmt.superclass.name.lexeme)) {
+			Lox.error(stmt.superclass.name, "A class can't inherit from itself");
+		}
+
+		if (stmt.superclass != null) {
+			this.resolve(stmt.superclass);
+		}
+
 		this.beginScope();
 		this.scopes.peek().put("this", true);
 

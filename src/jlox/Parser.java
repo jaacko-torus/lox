@@ -91,6 +91,13 @@ public class Parser {
 
 	private Stmt classDeclaration() {
 		Token name = this.consume(TokenType.IDENTIFIER, "Expect class name.");
+
+		Expr.Variable superclass = null;
+		if (this.match(TokenType.LESS)) {
+			this.consume(TokenType.IDENTIFIER, "Expect superclass name.");
+			superclass = new Expr.Variable(this.previous());
+		}
+
 		this.consume(TokenType.LEFT_CURLY, "Expect \"{\" before class body.");
 
 		List<Stmt.Function> methods = new ArrayList<>();
@@ -100,7 +107,7 @@ public class Parser {
 
 		this.consume(TokenType.RIGHT_CURLY, "Expect \"}\" after class body.");
 
-		return new Stmt.Class(name, methods);
+		return new Stmt.Class(name, superclass, methods);
 	}
 
 	private Stmt varDeclaration() {
