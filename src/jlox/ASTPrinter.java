@@ -57,6 +57,11 @@ public class ASTPrinter implements Expr.Visitor<String> {
 	}
 
 	@Override
+	public String visitThisExpr(Expr.This expr) {
+		return "<not implemented>";
+	}
+
+	@Override
 	public String visitUnaryExpr(Expr.Unary expr) {
 		return this.parenthesize(expr.operator.lexeme, expr.right);
 	}

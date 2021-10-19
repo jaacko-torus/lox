@@ -143,6 +143,12 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	}
 
 	@Override
+	public Void visitThisExpr(Expr.This expr) {
+		this.resolveLocal(expr, expr.keyword);
+		return null;
+	}
+
+	@Override
 	public Void visitUnaryExpr(Expr.Unary expr) {
 		this.resolve(expr.right);
 		return null;
@@ -171,10 +177,15 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 		this.declare(stmt.name);
 		this.define(stmt.name);
 
+		this.beginScope();
+		this.scopes.peek().put("this", true);
+
 		for (Stmt.Function method : stmt.methods) {
 			FunctionType declaration = FunctionType.METHOD;
 			this.resolveFunction(method, declaration);
 		}
+
+		this.endScope();
 
 		return null;
 	}
