@@ -372,6 +372,13 @@ public class Parser {
 		if (this.match(TokenType.NUMBER, TokenType.STRING)) {
 			return new Expr.Literal(this.previous().literal);
 		}
+		
+		if (this.match(TokenType.SUPER)) {
+			Token keyword = this.previous();
+			this.consume(TokenType.DOT, "Expect \".\" after \"super\".");
+			Token method = this.consume(TokenType.IDENTIFIER, "Expect superclass method name.");
+			return new Expr.Super(keyword, method);
+		}
 
 		if (this.match(TokenType.THIS)) {
 			return new Expr.This(this.previous());
