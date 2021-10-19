@@ -151,6 +151,12 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 	}
 
 	@Override
+	public Void visitSuperExpr(Expr.Super expr) {
+		this.resolveLocal(expr, expr.keyword);
+		return null;
+	}
+
+	@Override
 	public Void visitThisExpr(Expr.This expr) {
 		if (this.currentClass == ClassType.NONE) {
 			Lox.error(expr.keyword, "Can't use \"this\" outside of a class.");
@@ -201,6 +207,11 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 			this.resolve(stmt.superclass);
 		}
 
+		if (stmt.superclass != null) {
+			this.beginScope();
+			this.scopes.peek().put("super", true);
+		}
+
 		this.beginScope();
 		this.scopes.peek().put("this", true);
 
@@ -214,6 +225,10 @@ public class Resolver implements Expr.Visitor<Void>, Stmt.Visitor<Void> {
 		}
 
 		this.endScope();
+
+		if (stmt.superclass != null) {
+			this.endScope();
+		}
 
 		this.currentClass = enclosingClass;
 		return null;

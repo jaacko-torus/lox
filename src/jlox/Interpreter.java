@@ -179,6 +179,20 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 	}
 
 	@Override
+	public Object visitSuperExpr(Expr.Super expr) {
+		int distance = this.locals.get(expr);
+		LoxClass superclass = (LoxClass)this.environment.getAt(distance, "super");
+		LoxInstance object = (LoxInstance)this.environment.getAt(distance - 1, "this");
+		LoxFunction method = superclass.findMethod(expr.method.lexeme);
+
+		if (method == null) {
+			throw new RuntimeError(expr.method, "Undefined property \"" + expr.method.lexeme + "\".");
+		}
+
+		return method.bind(object);
+	}
+
+	@Override
 	public Object visitThisExpr(Expr.This expr) {
 		return this.lookupVariable(expr.keyword, expr);
 	}
@@ -216,6 +230,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 
 		this.environment.define(stmt.name.lexeme, null);
 
+		if (stmt.superclass != null) {
+			this.environment = new Environment(this.environment);
+			this.environment.define("super", superclass);
+		}
+
 		Map<String, LoxFunction> methods = new HashMap<>();
 		for (Stmt.Function method : stmt.methods) {
 			LoxFunction function = new LoxFunction(method, this.environment, method.name.lexeme.equals("init"));
@@ -223,6 +242,11 @@ public class Interpreter implements Expr.Visitor<Object>, Stmt.Visitor<Void> {
 		}
 
 		LoxClass loxClass = new LoxClass(stmt.name.lexeme, (LoxClass)superclass, methods);
+
+		if (superclass != null) {
+			this.environment = this.environment.enclosing;
+		}
+
 		this.environment.assign(stmt.name, loxClass);
 		return null;
 	}
