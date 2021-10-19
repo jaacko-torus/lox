@@ -98,7 +98,7 @@ public class Parser {
 			methods.add(this.function("method"));
 		}
 
-		this.consume(TokenType.RIGHT_CURLY, "Expect '}' after class body.");
+		this.consume(TokenType.RIGHT_CURLY, "Expect \"}\" after class body.");
 
 		return new Stmt.Class(name, methods);
 	}
@@ -111,15 +111,15 @@ public class Parser {
 			initializer = this.expression();
 		}
 
-		this.consume(TokenType.SEMICOLON, "Expect ';' after variable declaration.");
+		this.consume(TokenType.SEMICOLON, "Expect \";\" after variable declaration.");
 		return new Stmt.Var(name, initializer);
 	}
 
 	private Stmt whileStatement() {
-		this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'while'.");
+		this.consume(TokenType.LEFT_PAREN, "Expect \"(\" after \"while\".");
 		Expr condition = this.expression();
 
-		this.consume(TokenType.RIGHT_PAREN, "Expect ')' after condition.");
+		this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after condition.");
 		Stmt body = this.statement();
 
 		return new Stmt.While(condition, body);
@@ -144,7 +144,7 @@ public class Parser {
 	}
 
 	private Stmt forStatement() {
-		this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'for'.");
+		this.consume(TokenType.LEFT_PAREN, "Expect \"(\" after \"for\".");
 
 		Stmt initializer;
 		if (this.match(TokenType.SEMICOLON)) {
@@ -159,13 +159,13 @@ public class Parser {
 		if (!this.check(TokenType.SEMICOLON)) {
 			condition = this.expression();
 		}
-		consume(TokenType.SEMICOLON, "Expect ';' after loop condition.");
+		consume(TokenType.SEMICOLON, "Expect \";\" after loop condition.");
 
 		Expr increment = null;
 		if (!this.check(TokenType.RIGHT_PAREN)) {
 			increment = this.expression();
 		}
-		this.consume(TokenType.RIGHT_PAREN, "Expect ')' after for clauses.");
+		this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after for clauses.");
 
 		Stmt body = this.statement();
 
@@ -187,9 +187,9 @@ public class Parser {
 	}
 
 	private Stmt ifStatement() {
-		this.consume(TokenType.LEFT_PAREN, "Expect '(' after 'if'.");
+		this.consume(TokenType.LEFT_PAREN, "Expect \"(\" after \"if\".");
 		Expr condition = this.expression();
-		this.consume(TokenType.RIGHT_PAREN, "Expect ')' after if condition.");
+		this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after if condition.");
 
 		Stmt thenBranch = this.statement();
 		Stmt elseBranch = null;
@@ -207,13 +207,13 @@ public class Parser {
 			statements.add(this.declaration());
 		}
 
-		this.consume(TokenType.RIGHT_CURLY, "Expect '}' after block.");
+		this.consume(TokenType.RIGHT_CURLY, "Expect \"}\" after block.");
 		return statements;
 	}
 
 	private Stmt printStatement() {
 		Expr value = expression();
-		this.consume(TokenType.SEMICOLON, "Expect ';' after value.");
+		this.consume(TokenType.SEMICOLON, "Expect \";\" after value.");
 		return new Stmt.Print(value);
 	}
 
@@ -224,19 +224,19 @@ public class Parser {
 			value = this.expression();
 		}
 
-		this.consume(TokenType.SEMICOLON, "Expect ';' after return value.");
+		this.consume(TokenType.SEMICOLON, "Expect \";\" after return value.");
 		return new Stmt.Return(keyword, value);
 	}
 
 	private Stmt expressionStatement() {
 		Expr value = expression();
-		this.consume(TokenType.SEMICOLON, "Expect ';' after value.");
+		this.consume(TokenType.SEMICOLON, "Expect \";\" after value.");
 		return new Stmt.Expression(value);
 	}
 
 	private Stmt.Function function(String kind) {
 		Token name = this.consume(TokenType.IDENTIFIER, "Expect " + kind + " name.");
-		consume(TokenType.LEFT_PAREN, "Expect '(' after " + kind + " name.");
+		consume(TokenType.LEFT_PAREN, "Expect \"(\" after " + kind + " name.");
 		List<Token> parameters = new ArrayList<>();
 
 		if (!this.check(TokenType.RIGHT_PAREN)) {
@@ -249,9 +249,9 @@ public class Parser {
 			} while (this.match(TokenType.COMMA));
 		}
 
-		this.consume(TokenType.RIGHT_PAREN, "Expect ')' after parameters.");
+		this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after parameters.");
 
-		this.consume(TokenType.LEFT_CURLY, "Expect '{' before " + kind + " body.");
+		this.consume(TokenType.LEFT_CURLY, "Expect \"{\" before " + kind + " body.");
 		List<Stmt> body = block();
 		return new Stmt.Function(name, parameters, body);
 	}
@@ -327,7 +327,7 @@ public class Parser {
 			} while (this.match(TokenType.COMMA));
 		}
 
-		Token paren = this.consume(TokenType.RIGHT_PAREN, "Expect ')' after arguments.");
+		Token paren = this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after arguments.");
 
 		return new Expr.Call(callee, paren, arguments);
 	}
@@ -365,7 +365,7 @@ public class Parser {
 		if (this.match(TokenType.NUMBER, TokenType.STRING)) {
 			return new Expr.Literal(this.previous().literal);
 		}
-		
+
 		if (this.match(TokenType.THIS)) {
 			return new Expr.This(this.previous());
 		}
@@ -376,7 +376,7 @@ public class Parser {
 
 		if (this.match(TokenType.LEFT_PAREN)) {
 			Expr expr = this.expression();
-			this.consume(TokenType.RIGHT_PAREN, "Expect ')' after expression.");
+			this.consume(TokenType.RIGHT_PAREN, "Expect \")\" after expression.");
 			return new Expr.Grouping(expr);
 		}
 
