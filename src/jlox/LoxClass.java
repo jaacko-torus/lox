@@ -18,6 +18,10 @@ public class LoxClass implements LoxCallable {
 		if (this.methods.containsKey(name)) {
 			return this.methods.get(name);
 		}
+		
+		if (superclass != null) {
+			return superclass.findMethod(name);
+		}
 
 		return null;
 	}
