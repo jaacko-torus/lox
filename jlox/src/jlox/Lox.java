@@ -21,16 +21,16 @@ public class Lox {
 			System.out.println("Usage: jlox [script]");
 			System.exit(64);
 		} else if (args.length == 1) {
-			runFile(args[0]);
+			Lox.runFile(args[0]);
 		} else {
-			runPrompt();
+			Lox.runPrompt();
 		}
 	}
 
 	private static void runFile(String path) throws IOException {
 		byte[] bytes = Files.readAllBytes(Paths.get(path));
 
-		run(new String(bytes, Charset.defaultCharset()));
+		Lox.run(new String(bytes, Charset.defaultCharset()));
 
 		// https://www.freebsd.org/cgi/man.cgi?query=sysexits
 		// indicate an error in the exit code
@@ -55,9 +55,9 @@ public class Lox {
 				break;
 			}
 
-			run(line);
-			hadError = false;
-			hadRuntimeError = false;
+			Lox.run(line);
+			Lox.hadError = false;
+			Lox.hadRuntimeError = false;
 		}
 	}
 
@@ -70,34 +70,34 @@ public class Lox {
 
 		if (hadError) return;
 
-		Resolver resolver = new Resolver(interpreter);
+		Resolver resolver = new Resolver(Lox.interpreter);
 		resolver.resolve(statements);
 
-		if (hadError) return;
+		if (Lox.hadError) return;
 
-		interpreter.interpret(statements);
+		Lox.interpreter.interpret(statements);
 		// System.out.println(new ASTPrinter().print(expression));
 	}
 
 	static void error(int line, String message) {
-		report(line, "", message);
+		Lox.report(line, "", message);
 	}
 
 	private static void report(int line, String where, String message) {
 		System.err.println("[line " + line + "] Error" + where + ": " + message);
-		hadError = true;
+		Lox.hadError = true;
 	}
 
 	static void error(Token token, String message) {
 		if (token.type == TokenType.EOF) {
-			report(token.line, " at end", message);
+			Lox.report(token.line, " at end", message);
 		} else {
-			report(token.line, " at'" + token.lexeme + "'", message);
+			Lox.report(token.line, " at'" + token.lexeme + "'", message);
 		}
 	}
 
 	static void runtimeError(RuntimeError error) {
 		System.err.println(error.getMessage() + "\n[line " + error.token.line + "]");
-		hadRuntimeError = true;
+		Lox.hadRuntimeError = true;
 	}
 }
