@@ -7,9 +7,9 @@ As this is a rather long book, I didn't know if I was ready to commit and finish
 
 ## Versions
 
-| Name | Language | Type        | Progress | README                   |
-|------|----------|-------------|----------|--------------------------|
-| JLox | Java     | Interpreter | Done     | [README](jlox/README.md) |
+| Name | Language | Type        | Progress | README         |
+|------|----------|-------------|----------|----------------|
+| JLox | Java     | Interpreter | Done     | [README](jlox) |
 | CLox | C        | Compiler    | WIP      | |
 
 ## Grammar
