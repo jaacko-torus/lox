@@ -1,8 +1,0 @@
-# ninja log v5
-26	122	6612030170209972	CMakeFiles/clox.dir/memory.c.obj	e66f642c250c9d08
-17	94	6612032578795443	CMakeFiles/clox.dir/chunk.c.obj	f9f1782385f6f4e0
-19	124	6612030170239959	CMakeFiles/clox.dir/debug.c.obj	b60dd7360fb4f2af
-2	97	6612030169949979	CMakeFiles/clox.dir/main.c.obj	8ed120b10f0c587b
-95	207	6612032579875434	clox.exe	7b5882d8b1345a14
-2	95	6612032578795443	CMakeFiles/clox.dir/value.c.obj	49354f1deb257ca2
-0	19	0	clean	b6cc2d69a40d8b01
