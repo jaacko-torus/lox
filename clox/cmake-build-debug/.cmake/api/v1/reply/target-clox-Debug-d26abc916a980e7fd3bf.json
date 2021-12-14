@@ -114,9 +114,7 @@
 				4,
 				7,
 				9,
-				11,
-				12,
-				13
+				11
 			]
 		}
 	],
@@ -186,16 +184,6 @@
 		{
 			"backtrace" : 1,
 			"path" : "vm.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "test1.h",
-			"sourceGroupIndex" : 1
-		},
-		{
-			"backtrace" : 1,
-			"path" : "test2.h",
 			"sourceGroupIndex" : 1
 		}
 	],
