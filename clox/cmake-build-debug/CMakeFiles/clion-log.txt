@@ -1,0 +1,4 @@
+C:\Users\JaackoTorus\AppData\Local\JetBrains\Toolbox\apps\CLion\ch-0\213.5744.254\bin\cmake\win\bin\cmake.exe -DCMAKE_BUILD_TYPE=Debug -DCMAKE_MAKE_PROGRAM=C:/Users/JaackoTorus/AppData/Local/JetBrains/Toolbox/apps/CLion/ch-0/213.5744.254/bin/ninja/win/ninja.exe -G Ninja C:\Users\JaackoTorus\Desktop\projects\lox\clox
+-- Configuring done
+-- Generating done
+-- Build files have been written to: C:/Users/JaackoTorus/Desktop/projects/lox/clox/cmake-build-debug
