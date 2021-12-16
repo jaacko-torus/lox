@@ -83,6 +83,8 @@ static uint8_t makeConstant(Value value) {
 		error("Too many constants in one chunk.");
 		return 0;
 	}
+
+	return (uint8_t)constant;
 }
 
 static void emitConstant(Value value) {
@@ -100,6 +102,11 @@ static void number() {
 
 static void expression() {
 
+}
+
+static void grouping() {
+	expression();
+	consume(TOKEN_RIGHT_PAREN, "Expect \")\" after expression.");
 }
 
 bool compile(const char* source, Chunk* chunk) {
