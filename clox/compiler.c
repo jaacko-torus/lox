@@ -77,7 +77,15 @@ static void emitReturn() {
 	emitByte(OP_RETURN);
 }
 
-void compile(const char* source, Chunk* chunk) {
+static void endCompiler() {
+	emitReturn();
+}
+
+static void expression() {
+
+}
+
+bool compile(const char* source, Chunk* chunk) {
 	initScanner(source);
 	compilingChunk = chunk;
 
