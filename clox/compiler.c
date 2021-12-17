@@ -14,15 +14,15 @@ typedef struct {
 
 typedef enum {
 	PREC_NONE,
-	PREC_ASSIGNMENT,	// =
-	PREC_OR,			// or
-	PREC_AND,			// and
-	PREC_EQUALITY,		// == !=
-	PREC_COMPARISON,	// < > <= >=
-	PREC_TERM,			// + -
-	PREC_FACTOR,		// * /
-	PREC_UNARY,			// ! -
-	PREC_CALL,			// . ()
+	PREC_ASSIGNMENT,    // =
+	PREC_OR,            // or
+	PREC_AND,            // and
+	PREC_EQUALITY,        // == !=
+	PREC_COMPARISON,    // < > <= >=
+	PREC_TERM,            // + -
+	PREC_FACTOR,        // * /
+	PREC_UNARY,            // ! -
+	PREC_CALL,            // . ()
 	PREC_PRIMARY
 } Precedence;
 
@@ -132,6 +132,29 @@ static void unary() {
 	switch (operatorType) {
 		case TOKEN_MINUS:
 			emitByte(OP_NEGATE);
+			break;
+		default:
+			return; // Unreachable.
+	}
+}
+
+static void binary() {
+	TokenType operatorType = parser.previous.type;
+	ParseRule* rule = getRule(operatorType);
+	parsePrecedence((Precedence)(rule->precedence + 1));
+
+	switch (operatorType) {
+		case TOKEN_PLUS:
+			emitByte(OP_ADD);
+			break;
+		case TOKEN_MINUS:
+			emitByte(OP_SUBTRACT);
+			break;
+		case TOKEN_STAR:
+			emitByte(OP_MULTIPLY);
+			break;
+		case TOKEN_SLASH:
+			emitByte(OP_DIVIDE);
 			break;
 		default:
 			return; // Unreachable.
