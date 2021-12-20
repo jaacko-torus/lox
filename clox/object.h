@@ -4,6 +4,15 @@
 #include "common.h"
 #include "value.h"
 
+#define ALLOCATE_OBJ(type, objectType) \
+	(type*)allocateObject(sizeof(type), objectType)
+
+static Obj* allocateObject(size_t size, ObjType type) {
+	Obj* object = (Obj*)reallocate(NULL, 0, size);
+	object->type = type;
+	return object;
+}
+
 #define OBJ_TYPE(value) (AS_OBJ(value)->type)
 
 #define IS_STRING(value) isObjType(value, OBJ_STRING)
@@ -24,6 +33,8 @@ struct ObjString {
 	int length;
 	char* chars;
 };
+
+ObjString* copyString(const char* chars, int length);
 
 static inline bool isObjType(Value value, ObjType type) {
 	return IS_OBJ(value) && AS_OBJ(value)->type == type;
