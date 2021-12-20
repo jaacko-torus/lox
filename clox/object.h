@@ -4,15 +4,6 @@
 #include "common.h"
 #include "value.h"
 
-#define ALLOCATE_OBJ(type, objectType) \
-	(type*)allocateObject(sizeof(type), objectType)
-
-static Obj* allocateObject(size_t size, ObjType type) {
-	Obj* object = (Obj*)reallocate(NULL, 0, size);
-	object->type = type;
-	return object;
-}
-
 #define OBJ_TYPE(value) (AS_OBJ(value)->type)
 
 #define IS_STRING(value) isObjType(value, OBJ_STRING)
@@ -26,6 +17,7 @@ typedef enum {
 
 struct Obj {
 	ObjType type;
+	struct Obj* next;
 };
 
 struct ObjString {
