@@ -3,11 +3,11 @@
 #include <string.h>
 
 #include "common.h"
+#include "compiler.h"
 #include "debug.h"
 #include "object.h"
 #include "memory.h"
 #include "vm.h"
-#include "compiler.h"
 
 VM vm;
 
@@ -75,19 +75,19 @@ static InterpretResult run() {
 #define READ_BYTE() (*vm.ip++)
 #define READ_CONSTANT() (vm.chunk->constants.values[READ_BYTE()])
 #define BINARY_OP(valueType, op)                          \
-    do {                                                  \
-        if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
-            runtimeError("Operands must be operands.");   \
-            return INTERPRET_RUNTIME_ERROR;               \
-        }                                                 \
-        double b = AS_NUMBER(pop());                      \
-        double a = AS_NUMBER(pop());                      \
-        push(valueType(a op b));                 \
-    } while (false)                                       \
+	do {                                                  \
+		if (!IS_NUMBER(peek(0)) || !IS_NUMBER(peek(1))) { \
+			runtimeError("Operands must be numbers.");    \
+			return INTERPRET_RUNTIME_ERROR;               \
+		}                                                 \
+		double b = AS_NUMBER(pop());                      \
+		double a = AS_NUMBER(pop());                      \
+		push(valueType(a op b));                          \
+	} while (false)
 
 	for (;;) {
 #ifdef DEBUG_TRACE_EXECUTION
-		printf("         ");
+		printf("          ");
 		for (Value* slot = vm.stack; slot < vm.stackTop; slot++) {
 			printf("[ ");
 			printValue(*slot);
@@ -101,6 +101,8 @@ static InterpretResult run() {
 			case OP_CONSTANT: {
 				Value constant = READ_CONSTANT();
 				push(constant);
+				printValue(constant);
+				printf("\n");
 				break;
 			}
 			case OP_NIL:
@@ -156,9 +158,13 @@ static InterpretResult run() {
 				}
 				push(NUMBER_VAL(-AS_NUMBER(pop())));
 				break;
-			case OP_RETURN: {
+			case OP_PRINT: {
 				printValue(pop());
 				printf("\n");
+				break;
+			}
+			case OP_RETURN: {
+				// Exit interpreter.
 				return INTERPRET_OK;
 			}
 		}
@@ -166,6 +172,7 @@ static InterpretResult run() {
 
 #undef READ_BYTE
 #undef READ_CONSTANT
+#undef BINARY_OP
 }
 
 InterpretResult interpret(const char* source) {

@@ -73,7 +73,7 @@ static Token errorToken(const char* message) {
 	return token;
 }
 
-static void skipWhiteSpace() {
+static void skipWhitespace() {
 	for (;;) {
 		char c = peek();
 		switch (c) {
@@ -88,7 +88,7 @@ static void skipWhiteSpace() {
 				break;
 			case '/':
 				if (peekNext() == '/') {
-					// A comment goes until the next of the line.
+					// A comment goes until the end of the line.
 					while (peek() != '\n' && !isAtEnd()) advance();
 				} else {
 					return;
@@ -101,7 +101,8 @@ static void skipWhiteSpace() {
 }
 
 static TokenType checkKeyword(int start, int length, const char* rest, TokenType type) {
-	if (scanner.current - scanner.start == start + length && memcmp(scanner.start + start, rest, length) == 0) {
+	if (scanner.current - scanner.start == start + length &&
+		memcmp(scanner.start + start, rest, length) == 0) {
 		return type;
 	}
 
@@ -143,11 +144,13 @@ static TokenType identifierType() {
 		case 't':
 			if (scanner.current - scanner.start > 1) {
 				switch (scanner.start[1]) {
-					case 'h': return checkKeyword(2, 2, "is", TOKEN_THIS);
-					case 'r': return checkKeyword(2, 2, "ue", TOKEN_TRUE);
+					case 'h':
+						return checkKeyword(2, 2, "is", TOKEN_THIS);
+					case 'r':
+						return checkKeyword(2, 2, "ue", TOKEN_TRUE);
 				}
 			}
-			
+			break;
 		case 'v':
 			return checkKeyword(1, 2, "ar", TOKEN_VAR);
 		case 'w':
@@ -167,7 +170,7 @@ static Token number() {
 
 	// Look for a fractional part.
 	if (peek() == '.' && isDigit(peekNext())) {
-		// Consume the '.'
+		// Consume the ".".
 		advance();
 
 		while (isDigit(peek())) advance();
@@ -190,7 +193,7 @@ static Token string() {
 }
 
 Token scanToken() {
-	skipWhiteSpace();
+	skipWhitespace();
 	scanner.start = scanner.current;
 
 	if (isAtEnd()) return makeToken(TOKEN_EOF);
@@ -205,9 +208,9 @@ Token scanToken() {
 		case ')':
 			return makeToken(TOKEN_RIGHT_PAREN);
 		case '{':
-			return makeToken(TOKEN_LEFT_CURLY);
+			return makeToken(TOKEN_LEFT_BRACE);
 		case '}':
-			return makeToken(TOKEN_RIGHT_CURLY);
+			return makeToken(TOKEN_RIGHT_BRACE);
 		case ';':
 			return makeToken(TOKEN_SEMICOLON);
 		case ',':
