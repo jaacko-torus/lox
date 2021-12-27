@@ -23,7 +23,7 @@ static Entry* findEntry(Entry* entries, int capacity, ObjString* key) {
 	uint32_t index = key->hash % capacity;
 	Entry* tombstone = NULL;
 
-	for (;;) {
+	while (true) {
 		Entry* entry = &entries[index];
 		if (entry->key == NULL) {
 			if (IS_NIL(entry->value)) {
@@ -116,7 +116,7 @@ ObjString* tableFindString(Table* table, const char* chars, int length, uint32_t
 	if (table->count == 0) return NULL;
 
 	uint32_t index = hash % table->capacity;
-	for (;;) {
+	while (true) {
 		Entry* entry = &table->entries[index];
 		if (entry->key == NULL) {
 			// Stop if we find an empty non-tombstone entry.

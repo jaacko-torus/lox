@@ -74,7 +74,7 @@ static Token errorToken(const char* message) {
 }
 
 static void skipWhitespace() {
-	for (;;) {
+	while (true) {
 		char c = peek();
 		switch (c) {
 			case ' ':

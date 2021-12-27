@@ -57,7 +57,7 @@ static void errorAt(Token* token, const char* message) {
 	} else if (token->type == TOKEN_ERROR) {
 		// Nothing.
 	} else {
-		fprintf(stderr, " at '%.*s'", token->length, token->start);
+		fprintf(stderr, " at \"%.*s\"", token->length, token->start);
 	}
 
 	fprintf(stderr, ": %s\n", message);
@@ -75,7 +75,7 @@ static void errorAtCurrent(const char* message) {
 static void advance() {
 	parser.previous = parser.current;
 
-	for (;;) {
+	while (true) {
 		parser.current = scanToken();
 		if (parser.current.type != TOKEN_ERROR) break;
 
@@ -203,7 +203,7 @@ static void literal() {
 
 static void grouping() {
 	expression();
-	consume(TOKEN_RIGHT_PAREN, "Expect ')' after expression.");
+	consume(TOKEN_RIGHT_PAREN, "Expect\")\" after expression.");
 }
 
 static void number() {
@@ -304,7 +304,7 @@ static void expression() {
 
 static void printStatement() {
 	expression();
-	consume(TOKEN_SEMICOLON, "Expect ';' after value.");
+	consume(TOKEN_SEMICOLON, "Expect \";\" after value.");
 	emitByte(OP_PRINT);
 }
 
