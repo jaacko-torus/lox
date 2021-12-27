@@ -8,7 +8,7 @@
     (type*)reallocate(NULL, 0, sizeof(type) * (count))
 
 #define FREE(type, pointer) \
-	reallocate(pointer, sizeof(type), 0)
+    reallocate(pointer, sizeof(type), 0)
 
 #define GROW_CAPACITY(capacity) \
     ((capacity) < 8 ? 8 : (capacity) * 2)
